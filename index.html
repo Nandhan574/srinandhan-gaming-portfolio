@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vagumari Srinandhan - Gamer Portfolio</title>
+    <meta name="description" content="Portfolio of Vagumari Srinandhan, an aspiring game tester and developer with expertise in game QA and web development.">
+    <meta name="keywords" content="game tester, game developer, portfolio, Vagumari Srinandhan, React, gaming">
+    <meta name="author" content="Vagumari Srinandhan">
+    <meta property="og:title" content="Vagumari Srinandhan - Gamer Portfolio">
+    <meta property="og:description" content="Explore the portfolio of Vagumari Srinandhan, showcasing gaming experience and technical projects.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="path/to/og-image.jpg">
+    <link rel="icon" type="image/png" href="path/to/favicon.png">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(255, 77, 77, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #2d2d2d;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ff4d4d;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #ff6666;
+            animation: glow 1.5s infinite;
+        }
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #ff4d4d #2d2d2d;
+        }
+        .error-boundary {
+            text-align: center;
+            padding: 20px;
+            background: #ff4d4d;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        /* Improved card layout */
+        .game-image-container {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .game-image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 77, 77, 0.2);
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .game-image-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            color: #888;
+            font-size: 16px;
+            text-align: center;
+            flex-direction: column;
+        }
+        
+        .game-card {
+            width: 280px;
+            background: linear-gradient(135deg, #374151, #1f2937);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 77, 77, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 77, 77, 0.15);
+            border-color: rgba(255, 77, 77, 0.3);
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff4d4d, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
+        }
+        
+        .game-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .game-description {
+            font-size: 14px;
+            color: #d1d5db;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+        
+        .games-grid {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .games-grid > * {
+            flex-shrink: 0;
+            scroll-snap-align: start;
+        }
+        
+        .accordion-content {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            border-radius: 0 0 16px 16px;
+            padding: 24px;
+        }
+        
+        .accordion-button {
+            background: linear-gradient(135deg, #374151, #1f2937);
+            border: 1px solid rgba(255, 77, 77, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-button:hover {
+            background: linear-gradient(135deg, #4b5563, #374151);
+            border-color: rgba(255, 77, 77, 0.4);
+        }
+    </style>
+</head>
+<body class="font-orbitron bg-gray-900 text-white min-h-screen">
+    <div id="root"></div>
+    <script type="text/babel" defer>
+        // Error Boundary Component to catch runtime errors
+        class ErrorBoundary extends React.Component {
+            state = { hasError: false, error: null };
+
+            static getDerivedStateFromError(error) {
+                return { hasError: true, error };
+            }
+
+            render() {
+                if (this.state.hasError) {
+                    return (
+                        <div className="error-boundary">
+                            <h2 className="text-xl font-bold">Something went wrong.</h2>
+                            <p>{this.state.error?.message || "Unknown error occurred."}</p>
+                            <button
+                                className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded text-white"
+                                onClick={() => window.location.reload()}
+                            >
+                                Reload Page
+                            </button>
+                        </div>
+                    );
+                }
+                return this.props.children;
+            }
+        }
+
+        function Header() {
+            const [theme, setTheme] = React.useState('default');
+
+            const toggleTheme = () => {
+                setTheme(theme === 'default' ? 'game-mode' : 'default');
+            };
+
+            return (
+                <header className={`py-12 text-center transition-all duration-500 ${theme === 'game-mode' ? 'bg-gradient-to-r from-purple-900 to-red-900' : 'bg-gradient-to-r from-blue-900 to-purple-900'}`}>
+                    <h1 className="text-4xl md:text-6xl font-bold mb-3 animate-pulse">Vagumari Srinandhan</h1>
+                    <p className="text-xl md:text-2xl mb-4">Aspiring Game Tester & Developer</p>
+                    <div className="flex justify-center space-x-4 mb-4">
+                        <a href="mailto:vagumarisrinandhan@gmail.com" className="text-blue-300 hover:text-blue-100 transition">vagumarisrinandhan@gmail.com</a>
+                        <span>|</span>
+                        <span>+91-7569893472</span>
+                        <span>|</span>
+                        <a href="https://www.linkedin.com" className="text-blue-300 hover:text-blue-100 transition">LinkedIn</a>
+                        <span>|</span>
+                        <a href="https://github.com" className="text-blue-300 hover:text-blue-100 transition">GitHub</a>
+                    </div>
+                    <button
+                        onClick={toggleTheme}
+                        className="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white font-bold transition transform hover:scale-105"
+                    >
+                        {theme === 'default' ? 'Enter Game Mode' : 'Exit Game Mode'}
+                    </button>
+                </header>
+            );
+        }
+
+        function GameCard({ game, index }) {
+            const [imageError, setImageError] = React.useState(false);
+            const [imageLoaded, setImageLoaded] = React.useState(false);
+
+            const handleImageError = () => {
+                setImageError(true);
+            };
+
+            const handleImageLoad = () => {
+                setImageLoaded(true);
+            };
+
+            const [gameName, gameDescription] = game.name.split(": ");
+
+            return (
+                <div className="game-card">
+                    <div className="game-image-container">
+                        {!imageError ? (
+                            <img
+                                src={game.image}
+                                alt={`${gameName} cover`}
+                                className="game-image"
+                                onError={handleImageError}
+                                onLoad={handleImageLoad}
+                                style={{
+                                    opacity: imageLoaded ? 1 : 0,
+                                    transition: 'opacity 0.3s ease'
+                                }}
+                            />
+                        ) : (
+                            <div className="game-image-fallback">
+                                <span style={{ fontSize: '24px', marginBottom: '8px' }}>🎮</span>
+                                <span>Game Cover</span>
+                            </div>
+                        )}
+                    </div>
+                    <div>
+                        <h4 className="game-title">{gameName}</h4>
+                        <p className="game-description">{gameDescription}</p>
+                    </div>
+                </div>
+            );
+        }
+
+        function Accordion({ title, games }) {
+            const [isOpen, setIsOpen] = React.useState(false);
+            const accordionId = `accordion-${title.replace(/\s+/g, '-')}`;
+
+            return (
+                <div className="mb-6">
+                    <button
+                        className="accordion-button w-full text-left text-2xl font-semibold text-red-400 hover:text-red-300 transition p-6 rounded-t-lg flex justify-between items-center"
+                        onClick={() => setIsOpen(!isOpen)}
+                        aria-expanded={isOpen}
+                        aria-controls={accordionId}
+                    >
+                        <span>{title}</span>
+                        <span className="text-xl">{isOpen ? '▲' : '▼'}</span>
+                    </button>
+                    {isOpen && (
+                        <div id={accordionId} className="accordion-content animate-fade-in">
+                            <div className="games-grid custom-scrollbar">
+                                {games.map((game, index) => (
+                                    <GameCard key={index} game={game} index={index} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function Section({ title, children, className }) {
+            return (
+                <section className={`py-8 px-4 md:px-16 ${className}`}>
+                    <h2 className="text-3xl font-bold text-blue-400 mb-6">{title}</h2>
+                    {children}
+                </section>
+            );
+        }
+
+        function BackToTop() {
+            return (
+                <button
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="fixed bottom-4 right-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-full text-white font-bold transition transform hover:scale-110"
+                    aria-label="Scroll to top"
+                >
+                    ↑ Top
+                </button>
+            );
+        }
+
+        function ContactForm() {
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert('Form submitted! (Backend integration needed)');
+            };
+
+            return (
+                <Section title="Contact Me" className="animate-fade-in">
+                    <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none transition"
+                            required
+                            aria-label="Name"
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none transition"
+                            required
+                            aria-label="Email"
+                        />
+                        <textarea
+                            placeholder="Message"
+                            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none transition"
+                            rows="4"
+                            required
+                            aria-label="Message"
+                        ></textarea>
+                        <button
+                            type="submit"
+                            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-bold transition transform hover:scale-105"
+                        >
+                            Send Message
+                        </button>
+                    </form>
+                </Section>
+            );
+        }
+
+        function App() {
+            return (
+                <div>
+                    <Header />
+                    <Section title="Introduction" className="animate-fade-in">
+                        <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                            A passionate gamer and computer science enthusiast with a B.Tech in Computer Science (CGPA: 8.16/10) from CMR College of Engineering and Technology. Skilled in game testing, bug tracking, and UI/UX analysis, I bring a deep understanding of gameplay mechanics to create immersive gaming experiences.
+                        </p>
+                    </Section>
+                    <Section title="Gaming Experience" className="animate-fade-in">
+                        <Accordion
+                            title="Action-Adventure / Open World"
+                            games={[
+                                { name: "GTA V: Mastered open-world exploration and multiplayer mechanics", image: "Images/gta-5.jpg" },
+                                { name: "Red Dead Redemption 2: Analyzed immersive storytelling and NPC behavior", image: "Images/RDR2.jpg" },
+                                { name: "Ghost of Tsushima: Studied fluid combat and stealth mechanics", image: "Images/ghost-of-tsushima .jpg" },
+                                { name: "Cyberpunk 2077: Evaluated branching narratives and RPG systems", image: "Images/Cyberpunk-2077.jpg" }
+                            ]}
+                        />
+                        <Accordion
+                            title="Story-Driven / Cinematic"
+                            games={[
+                                { name: "God of War (All parts): Analyzed narrative pacing and combat", image: "Images/god-of-war.jpg" },
+                                { name: "Detroit: Become Human: Explored choice-driven narratives", image: "Images/Detroit.jpg" },
+                                { name: "Uncharted 4: A Thief's End: Studied level design and cinematic flow", image: "Images/Uncharted 4 .jpg" },
+                                { name: "Uncharted: The Lost Legacy: Evaluated pacing and puzzles", image: "Images/Uncharted TLL.jpg" }
+                            ]}
+                        />
+                        <Accordion
+                            title="Superhero Franchise"
+                            games={[
+                                { name: "Marvel's Spider-Man Remastered: Analyzed traversal and combat", image: "Images/MarvelsSpiderManRemastered.jpeg" },
+                                { name: "Marvel's Spider-Man: Miles Morales: Studied character progression", image: "Images/MarvelsSpiderManMilesMorales.jpg" },
+                                { name: "Marvel's Spider-Man 2: Evaluated open-world scaling and AI", image: "Images/spider-man-2.jpg" }
+                            ]}
+                        />
+                        <Accordion
+                            title="Stealth / Strategy"
+                            games={[
+                                { name: "Hitman (All parts): Mastered sandbox stealth and replayability", image: "Images/hitman.jpg" },
+                                { name: "Assassin's Creed (AC1 to Mirage): Analyzed historical world-building", image: "Images/assassins-creed.jpg" }
+                            ]}
+                        />
+                        <Accordion
+                            title="RPG / Fantasy"
+                            games={[
+                                { name: "Genshin Impact: Studied gacha and elemental combat systems", image: "Images/GI.jpg" },
+                                { name: "Wuthering Waves: Evaluated fast-paced combat", image: "Images/wuthering-waves.jpg" },
+                                { name: "Zenless Zone Zero: Analyzed team synergy and combat flow", image: "Images/ZZZ.jpg" }
+                            ]}
+                        />
+                        <Accordion
+                            title="Mobile Games"
+                            games={[
+                                { name: "BGMI & Call of Duty: Mobile: Mastered fast-paced combat", image: "Images/BGMI.jpg" },
+                                { name: "Call of Duty: Mobile: Mastered fast-paced combat", image: "Images/CODM.jpeg" },
+                                { name: "Shadow Fight 2: Analyzed resource management", image: "Images/SF2.jpg" },
+                                { name: "Among Us: Studied social deduction mechanics", image: "Images/among-us.jpg" },
+                                { name: "Subway Surfers & Traffic Rider: Evaluated casual gameplay", image: "Images/SS.jpg" },
+                                { name: "8 Ball Pool: Analyzed UI simplicity", image: "Images/8 Ball Pool.jpg" },
+                                { name: "Dr. Driving: Analyzed UI simplicity", image: "Images/DR Driving .jpeg" }
+                            ]}
+                        />
+                    </Section>
+                    <Section title="Skills Gained Through Gaming" className="animate-fade-in">
+                        <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-2">Strategic Thinking</h3>
+                                <p className="text-gray-300">Mastered tactics in Hitman and Clash of Clans</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-2">Narrative Design</h3>
+                                <p className="text-gray-300">Analyzed storytelling in God of War</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-2">Combat Mechanics</h3>
+                                <p className="text-gray-300">Evaluated balance in Ghost of Tsushima</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-2">UI/UX Optimization</h3>
+                                <p className="text-gray-300">Critiqued interfaces in PUBG Mobile</p>
+                            </div>
+                        </div>
+                    </Section>
+                    <Section title="Technical Background" className="animate-fade-in">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-blue-400 font-bold mb-2">Game QA</h3>
+                                <p className="text-gray-300">Bug tracking, compatibility testing, UI/UX feedback</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-blue-400 font-bold mb-2">Programming</h3>
+                                <p className="text-gray-300">Python, C++, Java</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-blue-400 font-bold mb-2">Web Development</h3>
+                                <p className="text-gray-300">HTML, CSS, JavaScript, React JS, Node.js, Ruby on Rails</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-blue-400 font-bold mb-2">Databases</h3>
+                                <p className="text-gray-300">MySQL, MongoDB</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-blue-400 font-bold mb-2">Tools</h3>
+                                <p className="text-gray-300">Git, VS Code, Postman</p>
+                            </div>
+                        </div>
+                    </Section>
+                    <Section title="Professional Experience" className="animate-fade-in">
+                        <div className="max-w-4xl mx-auto bg-gray-800 p-8 rounded-lg">
+                            <h3 className="text-2xl font-semibold text-red-400 mb-4">Intern, Edbinary Technologies (2023–Present)</h3>
+                            <div className="space-y-3">
+                                <div className="flex items-start">
+                                    <span className="text-blue-400 mr-3">•</span>
+                                    <p className="text-gray-300">Developed Ruby on Rails web features</p>
+                                </div>
+                                <div className="flex items-start">
+                                    <span className="text-blue-400 mr-3">•</span>
+                                    <p className="text-gray-300">Tested UPSC mobile app for functionality and compatibility</p>
+                                </div>
+                                <div className="flex items-start">
+                                    <span className="text-blue-400 mr-3">•</span>
+                                    <p className="text-gray-300">Enhanced interactive learning modules</p>
+                                </div>
+                            </div>
+                        </div>
+                    </Section>
+                    <Section title="Key Projects" className="animate-fade-in">
+                        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-3">GameSpecHub</h3>
+                                <p className="text-gray-300 mb-2">Python and MongoDB-based game recommendation system</p>
+                                <span className="text-yellow-400 text-sm">In Progress</span>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-3">Content Analyzer</h3>
+                                <p className="text-gray-300">Python + NLP tool for YouTube content analysis</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-red-400 font-bold mb-3">UPSC Profile Website</h3>
+                                <p className="text-gray-300">Ruby on Rails user profile manager with MySQL backend</p>
+                            </div>
+                        </div>
+                    </Section>
+                    <Section title="Achievements & Certifications" className="animate-fade-in">
+                        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-green-400 font-bold mb-2">🎓 Certification</h3>
+                                <p className="text-gray-300">QA: Become a Game Tester (Udemy, 2025)</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-green-400 font-bold mb-2">🏆 Leadership</h3>
+                                <p className="text-gray-300">Vice-Captain, CMRCEI Handball Team (2022–2024)</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-green-400 font-bold mb-2">🥈 Competition</h3>
+                                <p className="text-gray-300">2nd Prize, CMRCEI Inter Project Competition (2023)</p>
+                            </div>
+                            <div className="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                                <h3 className="text-green-400 font-bold mb-2">💼 Internship</h3>
+                                <p className="text-gray-300">Verzeo Internship, Machine Learning with Python (2022)</p>
+                            </div>
+                        </div>
+                    </Section>
+                    <ContactForm />
+                    <footer className="bg-gray-800 text-center py-8 border-t border-gray-700">
+                        <p className="text-gray-400">© 2025 Vagumari Srinandhan. All rights reserved.</p>
+                    </footer>
+                    <BackToTop />
+                </div>
+            );
+        }
+
+        // Ensure React is loaded before rendering
+        function initializeApp() {
+            if (typeof React !== 'undefined' && typeof ReactDOM !== 'undefined') {
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(
+                    React.createElement(ErrorBoundary, null,
+                        React.createElement(App, null)
+                    )
+                );
+            } else {
+                console.error('React or ReactDOM not loaded');
+                setTimeout(initializeApp, 100);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>
